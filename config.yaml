@@ -1,0 +1,42 @@
+learning:
+    mode: "stateVarN"
+    sutinfoFile: "sutinfo.yaml"
+    useExistingJarfile: "sut/sut.jar"
+    seed: 129977735602
+    # useSutSimulation: true
+    reuseCounterExample: true
+    # memVOrder: positionalHistory
+    reconstructAbstractions: true
+    reductionStrategies: ["loop","singleTransition"]
+    maxTime: 3000
+testing:
+   # methods: [randomWalk]
+    minValue: 0
+    maxValue: 400
+    maxTraceLength: 100
+    maxNumTraces: 20000
+verification:
+    method: traces
+    verificationTraces:
+        - IRegister(1) -> IRegister(2) -> IRegister(3) -> ILogin(2,-11) -> ILogin(1,-10) -> IChangePassword(1) -> IChangePassword(2) -> ILogout(1) -> IChangePassword(1) -> IChangePassword(2) -> ILogout(2) -> IChangePassword(2) -> IChangePassword(3) -> ILogout(3) -> IChangePassword(3)
+        - IRegister(1) -> IRegister(2) -> IRegister(3) -> IRegister(4) -> ILogin(3,-12) -> ILogin(2,-11) -> ILogin(1,-10) -> IChangePassword(1) -> IChangePassword(2) -> IChangePassword(3) -> ILogout(1) -> IChangePassword(1) -> IChangePassword(2) -> ILogout(2) -> IChangePassword(2) -> IChangePassword(3) -> ILogout(3) -> IChangePassword(3) -> IChangePassword(4) -> ILogout(4) -> IChangePassword(4)
+        - IRegister(1) -> IRegister(2) -> IRegister(3) -> IRegister(4) -> IRegister(5) -> ILogin(3,-13) -> ILogin(3,-12) -> ILogin(2,-11) -> ILogin(1,-10) -> IChangePassword(1) -> IChangePassword(2) -> IChangePassword(3) -> IChangePassword(4) -> ILogout(1) -> IChangePassword(1) -> IChangePassword(2) -> ILogout(2) -> IChangePassword(2) -> IChangePassword(3) -> ILogout(3) -> IChangePassword(3) -> IChangePassword(4) -> ILogout(4) -> IChangePassword(4) -> IChangePassword(5) -> ILogout(5) -> IChangePassword(5) 
+        - IRegister(1) -> IRegister(2) -> IRegister(3) -> IRegister(4) -> IRegister(5) -> ILogin(3,-13) -> ILogin(3,-12) -> ILogin(2,-11) -> ILogin(1,-10) -> IChangePassword(1) -> IChangePassword(2) -> IChangePassword(3) -> IChangePassword(4) -> ILogout(1) -> IChangePassword(1) -> IChangePassword(2) -> ILogout(2) -> IChangePassword(2) -> IChangePassword(3) -> ILogout(3) -> IChangePassword(3) -> IChangePassword(4) -> ILogout(4) -> IChangePassword(4) -> IChangePassword(5) -> ILogout(5) -> IChangePassword(5) 
+        - IRegister(1) -> IRegister(2) -> IRegister(3) -> ILogin(1,-10) -> IChangePassword(1) / OOK(-13) -> ILogout(1) -> ILogin(1,-13)  
+        - IRegister(1) -> IRegister(2) -> IRegister(3) -> ILogin(2,-10) -> IChangePassword(2) / OOK(-13) -> ILogout(2) -> ILogin(2,-13)  
+        - IRegister(1) -> IRegister(2) -> IRegister(3) -> ILogin(3,-10) -> IChangePassword(3) / OOK(-13) -> ILogout(3) -> ILogin(3,-13)  
+learnResults:
+    outputDir: "output/${sutname}"
+sutInterface:
+    directCall:
+       package: "cav"
+       className: "Sut"  
+sutImplementation:
+    modelFile: model.uppaal.xml
+    modelFilePath: input/Do_FreshSimpleOutput/model.uppaal.xml
+    modelName: ${modelDirName}
+    projectClassPath: build            
+logging:
+    childLoggerLevels : { 
+        #abslearning.tree.trace.LookaheadSutTraceStateVar: "off",
+    }

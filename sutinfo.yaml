@@ -1,0 +1,17 @@
+name: Fresh_CAV_MULTILOGIN2
+constants: []
+inputInterfaces:
+  ILogin:
+  - Integer
+  - Integer
+  ILogout: 
+  - Integer
+  IRegister:  
+  - Integer
+  IChangePassword:  
+  - Integer  
+outputInterfaces:
+  ONOK: []
+  OOK: 
+  - Integer
+
