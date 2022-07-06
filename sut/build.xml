@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project basedir="." default="create_run_jar" name="SUT_VENDING_MACHINE">
+    <property name="target" value="1.7"/>
+    <property name="source" value="1.7"/>
+    <property environment="env"/>
+    <property name="debuglevel" value="source,lines,vars"/>
+    <path id="SUT_VENDING_MACHINE.classpath">
+        <pathelement location="build"/>
+    </path>
+    <property name="jarfile" value="sut_vending_machine.jar"/>
+    <target name="create_run_jar" depends="build">
+        <jar destfile="${jarfile}" filesetmanifest="mergewithoutmain">
+            <manifest>
+                <attribute name="Main-Class" value="cav.Main"/>
+                <attribute name="Class-Path" value="."/>
+            </manifest>
+            <fileset dir="build"/>
+        </jar>
+    </target>
+    <target name="clean">
+        <delete dir="build"/>
+    </target>
+    <target name="cleanall" depends="clean">
+        <delete file="${jarfile}"/>
+    </target>
+    <target name="init">
+        <mkdir dir="build"/>
+        <copy includeemptydirs="false" todir="build">
+            <fileset dir="src">
+                <exclude name="**/*.launch"/>
+                <exclude name="**/*.java"/>
+            </fileset>
+        </copy>
+    </target>
+    <target depends="build-subprojects,build-project" name="build"/>
+    <target name="build-subprojects"/>
+    <target depends="init" name="build-project">
+        <echo message="${ant.project.name}: ${ant.file}"/>
+        <javac debug="true" debuglevel="${debuglevel}" destdir="build" includeantruntime="false" source="${source}" target="${target}">
+            <src path="src"/>
+            <classpath refid="SUT_VENDING_MACHINE.classpath"/>
+        </javac>
+    </target>
+    <target description="Build all projects which reference this project. Useful to propagate changes." name="build-refprojects"/>
+    <target description="copy Eclipse compiler jars to ant lib directory" name="init-eclipse-compiler">
+        <copy todir="${ant.library.dir}">
+            <fileset dir="${ECLIPSE_HOME}/plugins" includes="org.eclipse.jdt.core_*.jar"/>
+        </copy>
+        <unzip dest="${ant.library.dir}">
+            <patternset includes="jdtCompilerAdapter.jar"/>
+            <fileset dir="${ECLIPSE_HOME}/plugins" includes="org.eclipse.jdt.core_*.jar"/>
+        </unzip>
+    </target>
+    <target description="compile project with Eclipse compiler" name="build-eclipse-compiler">
+        <property name="build.compiler" value="org.eclipse.jdt.core.JDTCompilerAdapter"/>
+        <antcall target="build"/>
+    </target>
+    <target name="Main (1)">
+        <java classname="cav.Main" failonerror="true" fork="yes">
+            <classpath refid="SUT_VENDING_MACHINE.classpath"/>
+        </java>
+    </target>
+</project>
